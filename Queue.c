@@ -35,18 +35,19 @@ HidGuardianQueueInitialize(
     _In_ WDFDEVICE Device
     )
 {
-    WDFQUEUE queue;
+    //WDFQUEUE queue;
     NTSTATUS status;
-    WDF_IO_QUEUE_CONFIG    queueConfig;
+    //WDF_IO_QUEUE_CONFIG    queueConfig;
 
     PAGED_CODE();
+	UNREFERENCED_PARAMETER(Device);
     
     //
     // Configure a default queue so that requests that are not
     // configure-fowarded using WdfDeviceConfigureRequestDispatching to goto
     // other queues get dispatched here.
     //
-    WDF_IO_QUEUE_CONFIG_INIT_DEFAULT_QUEUE(
+    /*WDF_IO_QUEUE_CONFIG_INIT_DEFAULT_QUEUE(
          &queueConfig,
         WdfIoQueueDispatchParallel
         );
@@ -64,6 +65,9 @@ HidGuardianQueueInitialize(
         TraceEvents(TRACE_LEVEL_ERROR, TRACE_QUEUE, "WdfIoQueueCreate failed %!STATUS!", status);
         return status;
     }
+	*/
+
+	status = STATUS_SUCCESS;
 
     return status;
 }

@@ -62,6 +62,16 @@ HidGuardianCreateDevice(
         &deviceAttributes
     );
 
+	/*WDF_IO_TYPE_CONFIG ioConfig;
+	WDF_IO_TYPE_CONFIG_INIT(&ioConfig);
+	ioConfig.ReadWriteIoType = WdfDeviceIoDirect;
+	ioConfig.DeviceControlIoType = WdfDeviceIoDirect;
+	ioConfig.DirectTransferThreshold = 32;
+
+	WdfDeviceInitSetIoTypeEx(DeviceInit, &ioConfig);
+	*/
+	WdfDeviceInitSetIoType(DeviceInit, WdfDeviceIoDirect);
+
     WDF_OBJECT_ATTRIBUTES_INIT_CONTEXT_TYPE(&deviceAttributes, DEVICE_CONTEXT);
 
     status = WdfDeviceCreate(&DeviceInit, &deviceAttributes, &device);
