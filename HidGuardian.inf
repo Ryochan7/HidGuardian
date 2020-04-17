@@ -34,9 +34,13 @@ WdfCoInstaller$KMDFCOINSTALLERVERSION$.dll=1 ; make sure the number matches with
 
 [HidGuardian_Device.NT]
 CopyFiles=Drivers_Dir
+AddReg=Drivers_AddReg
 
 [Drivers_Dir]
 HidGuardian.sys
+
+[Drivers_AddReg]
+HKLM,"System\CurrentControlSet\Control\Class\{745a17a0-74d3-11d0-b6fe-00a0c90f57da}","UpperFilters",0x00010008,"HidGuardian"
 
 ;-------------- Service installation
 [HidGuardian_Device.NT.Services]
