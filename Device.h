@@ -44,6 +44,7 @@ typedef struct _DEVICE_CONTEXT
 {
     WDFMEMORY   HardwareIDsMemory;
     PCWSTR      HardwareIDs;
+    INT32       Ui_Number;
 
 } DEVICE_CONTEXT, *PDEVICE_CONTEXT;
 

@@ -47,6 +47,7 @@ HidGuardianCreateDevice(
     NTSTATUS                status;
     WDF_FILEOBJECT_CONFIG   deviceConfig;
     WDFMEMORY               memory;
+    WDFMEMORY               uiNumMemory;
 
     PAGED_CODE();
 
@@ -116,6 +117,23 @@ HidGuardianCreateDevice(
         // 
         deviceContext->HardwareIDsMemory = memory;
         deviceContext->HardwareIDs = WdfMemoryGetBuffer(memory, NULL);
+
+        //
+        // Query for current device's UI Number
+        //
+        status = WdfDeviceAllocAndQueryProperty(device,
+            DevicePropertyUINumber,
+            NonPagedPool,
+            &deviceAttributes,
+            &uiNumMemory
+        );
+
+        deviceContext->Ui_Number = -1;
+        if (NT_SUCCESS(status)) {
+            UCHAR* ptr;
+            ptr = (UCHAR*)WdfMemoryGetBuffer(uiNumMemory, NULL);
+            deviceContext->Ui_Number = *(PINT32)ptr;
+        }
 
         //
         // Initialize the I/O Package and any Queues
@@ -291,6 +309,12 @@ NTSTATUS AmIAffected(PDEVICE_CONTEXT DeviceContext)
 
     WDF_OBJECT_ATTRIBUTES_INIT(&stringAttributes);
     stringAttributes.ParentObject = col;
+
+    // If Ui_Number is not -1, assume a virtual device created by ViGEmBus
+    if (DeviceContext->Ui_Number != -1)
+    {
+        return STATUS_DEVICE_FEATURE_NOT_SUPPORTED;
+    }
 
     //
     // Get the multi-string value for affected devices
